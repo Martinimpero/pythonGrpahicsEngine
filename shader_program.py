@@ -3,6 +3,7 @@ class ShaderProgram:
         self.ctx = ctx
         self.programs = {}
         self.programs['default'] = self.get_program('default')
+        self.programs['advanced_skybox'] = self.get_program('skybox/advanced_skybox')
 
     def get_program(self, shader_program_name):
         """
