@@ -4,6 +4,7 @@ class ShaderProgram:
         self.programs = {}
         self.programs['default'] = self.get_program('default')
         self.programs['advanced_skybox'] = self.get_program('skybox/advanced_skybox')
+        self.programs['shadow_map'] = self.get_program('shadow_map')
 
     def get_program(self, shader_program_name):
         """
