@@ -6,8 +6,10 @@ class VBO:
         self.vbos = {}
         self.vbos['cube'] = CubeVBO(ctx)
         self.vbos['cat'] = CustomVBO(ctx, objectpath='objects/cat/20430_Cat_v1_NEW.obj')
+        self.vbos['cushiony_thingy'] = CustomVBO(ctx, objectpath='objects/cushiony_thingy/cushiony_thingy.obj')
         self.vbos['advanced_skybox'] = AdvancedSkyboxVBO(ctx)
-
+        self.vbos['plane'] = PlaneVBO(ctx)
+        self.vbos['tree'] = CustomVBO(ctx, objectpath='objects/tree/tree.obj')
     def destroy(self):
         [vbo.destroy() for vbo in self.vbos.values()]
 class BaseVBO:
@@ -24,9 +26,47 @@ class BaseVBO:
         vbo = self.ctx.buffer(vertex_data)
         return vbo
 
+    @staticmethod
+    def get_data(vertices, indices):
+        """Flatten and structure vertex data according to indices."""
+        data = [vertices[ind] for triangle in indices for ind in triangle]
+        return np.array(data, dtype='f4')
+
     def destroy(self):
         self.vbo.release()
+class PlaneVBO(BaseVBO):
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.format = '2f 3f 3f'
+        self.attribs = ['in_texcoord_0', 'in_normal', 'in_position']
 
+    def get_vertex_data(self):
+        # Define a plane in the XZ plane
+        vertices = [
+            (-1, 0, -1), (1, 0, -1), (1, 0, 1), (-1, 0, 1)
+        ]
+        indices = [
+            (0, 1, 2), (0, 2, 3)  # CCW order for OpenGL default culling
+        ]
+
+        # Flip texture coordinates vertically
+        tex_coords = [
+            (0, 1), (1, 1), (1, 0), (0, 0)  # Swapped Y values
+        ]
+        tex_coord_indices = [
+            (0, 1, 2), (0, 2, 3)
+        ]
+
+        normals = [(0, -1, 0)] * 6  # Normal facing up
+
+        vertex_data = self.get_data(vertices, indices)
+        tex_coord_data = self.get_data(tex_coords, tex_coord_indices)
+        normals = np.array(normals, dtype='f4')
+
+        vertex_data = np.hstack([normals, vertex_data])
+        vertex_data = np.hstack([tex_coord_data, vertex_data])
+
+        return vertex_data
 class CubeVBO(BaseVBO):
     def __init__(self, ctx):
         super().__init__(ctx)

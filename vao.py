@@ -18,6 +18,14 @@ class VAO:
             program = self.program.programs['default'],
             vbo = self.vbo.vbos['cat'])
 
+        self.vaos['cushiony_thingy'] = self.get_vao(
+            program = self.program.programs['default'],
+            vbo = self.vbo.vbos['cushiony_thingy'])
+
+        self.vaos['tree'] = self.get_vao(
+            program = self.program.programs['default'],
+            vbo = self.vbo.vbos['tree'])
+
         # skybox vao
         self.vaos['advanced_skybox'] = self.get_vao(
             program = self.program.programs['advanced_skybox'],
@@ -30,6 +38,24 @@ class VAO:
         self.vaos['shadow_cat'] = self.get_vao(
             program = self.program.programs['shadow_map'],
             vbo = self.vbo.vbos['cat'])
+
+        self.vaos['shadow_cushiony_thingy'] = self.get_vao(
+            program = self.program.programs['shadow_map'],
+            vbo = self.vbo.vbos['cushiony_thingy'])
+
+        self.vaos['shadow_tree'] = self.get_vao(
+            program = self.program.programs['shadow_map'],
+            vbo = self.vbo.vbos['tree'])
+
+        # Add plane VAO
+        self.vaos['plane'] = self.get_vao(
+            program=self.program.programs['default'],
+            vbo=self.vbo.vbos['plane']
+        )
+        self.vaos['shadow_plane'] = self.get_vao(
+            program=self.program.programs['shadow_map'],
+            vbo=self.vbo.vbos['plane']
+        )
 
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attribs)], skip_errors=True)

@@ -7,9 +7,11 @@ class Texture:
         self.ctx = app.ctx
         self.textures = {}
         self.textures[0] = self.get_texture(path='textures/cube_texture.jpg')
+        self.textures[1] = self.get_texture(path='textures/pillow_floor_texture.jpg')
         self.textures['cat'] = self.get_texture(path='objects/cat/20430_cat_diff_v1.jpg')
         self.textures['skybox'] = self.get_texture_cube(dir_path='textures/skybox/', ext='jpg')
         self.textures['depth_texture'] = self.get_depth_texture()
+        self.textures['tree'] = self.get_texture(path='objects/tree/tree.png')
 
     def get_depth_texture(self):
         depth_texture = self.ctx.depth_texture(self.app.WIN_SIZE)
