@@ -34,8 +34,6 @@ class BaseModel:
     def render(self):
         self.update()
         self.vao.render()
-
-
 class ExtendedBaseModel(BaseModel):
     def __init__(self, app, vao_name, tex_id, pos, rot, scale):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
@@ -81,18 +79,22 @@ class ExtendedBaseModel(BaseModel):
         self.program['light.Ia'].write(self.app.light.Ia)
         self.program['light.Id'].write(self.app.light.Id)
         self.program['light.Is'].write(self.app.light.Is)
-
-
+class Plane(ExtendedBaseModel):
+    def __init__(self, app, vao_name='plane', tex_id=0, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
 class Cube(ExtendedBaseModel):
     def __init__(self, app, vao_name='cube', tex_id=0, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
+class MovingCube(ExtendedBaseModel):
+    def __init__(self, app, vao_name='cube', tex_id=0, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
 
-
+    def update(self):
+        self.m_model = self.get_model_matrix()
+        super().update()
 class Custom(ExtendedBaseModel):
     def __init__(self, app, vao_name, tex_id, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
-
-
 class SkyBox(BaseModel):
     def __init__(self, app, vao_name='skybox', tex_id='skybox', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
@@ -109,8 +111,6 @@ class SkyBox(BaseModel):
         # mvp
         self.program['m_proj'].write(self.camera.m_proj)
         self.program['m_view'].write(glm.mat4(glm.mat3(self.camera.m_view)))
-
-
 class AdvancedSkyBox(BaseModel):
     def __init__(self, app, vao_name='advanced_skybox', tex_id='skybox', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
